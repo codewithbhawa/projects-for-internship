@@ -1,0 +1,9 @@
+backend/reset_student.py
+backend/reset_admin.py
+backend/database/
+**/.env
+**/venv/
+**/node_modules/
+frontend/dist/
+__pycache__/
+*.pyc
