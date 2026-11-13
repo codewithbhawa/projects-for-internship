@@ -74,38 +74,64 @@ export default function Login() {
   }
 
   return (
-    <div style={styles.page}>
-      <form onSubmit={handleLogin} style={styles.card}>
-        <h1>Smart CBT</h1>
-        <p>Examination Management System</p>
+    <main className="auth-page">
+      <section className="auth-showcase" aria-label="Smart CBT introduction">
+        <div className="brand-lockup">
+          <span className="brand-mark" aria-hidden="true">✦</span>
+          <span>smartcbt</span>
+        </div>
+        <div className="showcase-copy">
+          <p className="showcase-kicker">A brighter way to test your best</p>
+          <h1>Ready to make your next move <span>count?</span></h1>
+          <p className="showcase-description">
+            A calmer, clearer space to prepare, take your exams, and celebrate
+            every step forward.
+          </p>
+        </div>
+        <p className="showcase-note">Learn at your pace. Show what you know.</p>
+      </section>
 
-        {!isRegistering && (
-          <div style={styles.roles}>
+      <section className="auth-panel">
+        <form onSubmit={handleLogin} className="auth-card">
+          <p className="eyebrow" style={{ color: "var(--purple)" }}>
+            {isRegistering ? "Get started" : "Welcome back"}
+          </p>
+          <h2>{isRegistering ? "Create your account" : "Sign in to continue"}</h2>
+          <p className="auth-subtitle">
+            {isRegistering
+              ? "Your learning journey starts with a few details."
+              : "Pick up right where your learning journey left off."}
+          </p>
+
+          {!isRegistering && (
+          <div className="role-switch" aria-label="Choose account type">
             <button
               type="button"
+              aria-pressed={role === "student"}
               onClick={() => {
                 setRole("student");
                 setSuccess("");
               }}
-              style={role === "student" ? styles.active : styles.role}
+              className={`role-option${role === "student" ? " is-active" : ""}`}
             >
               Student
             </button>
 
             <button
               type="button"
+              aria-pressed={role === "admin"}
               onClick={() => {
                 setRole("admin");
                 setSuccess("");
               }}
-              style={role === "admin" ? styles.active : styles.role}
+              className={`role-option${role === "admin" ? " is-active" : ""}`}
             >
               Admin
             </button>
           </div>
-        )}
+          )}
 
-        {isRegistering && (
+          {isRegistering && (
           <>
             <label htmlFor="name">Full Name</label>
             <input
@@ -115,123 +141,51 @@ export default function Login() {
               value={name}
               onChange={e => setName(e.target.value)}
               required
-              style={styles.input}
+              className="auth-input"
             />
           </>
-        )}
+          )}
 
-        <label htmlFor="email">Email Address</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email"
-          autoComplete="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          style={styles.input}
-        />
+          <label htmlFor="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autoComplete="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            className="auth-input"
+          />
 
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          autoComplete={isRegistering ? "new-password" : "current-password"}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          minLength={isRegistering ? 8 : undefined}
-          required
-          style={styles.input}
-        />
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            autoComplete={isRegistering ? "new-password" : "current-password"}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            minLength={isRegistering ? 8 : undefined}
+            required
+            className="auth-input"
+          />
 
-        {error && <p style={styles.error}>{error}</p>}
-        {success && <p style={styles.success}>{success}</p>}
+          {error && <p className="form-message is-error" role="alert">{error}</p>}
+          {success && <p className="form-message is-success" role="status">{success}</p>}
 
-        <button type="submit" disabled={loading} style={styles.submit}>
-          {loading
-            ? isRegistering ? "Creating account..." : "Logging in..."
-            : isRegistering ? "Create Student Account" : "Login"}
-        </button>
-        {role === "student" && (
-          <button type="button" onClick={toggleRegistration} style={styles.link}>
-            {isRegistering ? "Back to student login" : "Create a student account"}
+          <button type="submit" disabled={loading} className="auth-submit">
+            {loading
+              ? isRegistering ? "Creating account..." : "Signing in..."
+              : isRegistering ? "Create student account" : "Sign in"}
           </button>
-        )}
-      </form>
-    </div>
+          {role === "student" && (
+            <button type="button" onClick={toggleRegistration} className="auth-link">
+              {isRegistering ? "Back to student sign in" : "New here? Create a student account"}
+            </button>
+          )}
+        </form>
+      </section>
+    </main>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "#eef2ff",
-    fontFamily: "Arial, sans-serif",
-    padding: "20px"
-  },
-  card: {
-    background: "white",
-    padding: "35px",
-    borderRadius: "15px",
-    width: "100%",
-    maxWidth: "390px",
-    boxShadow: "0 8px 30px rgba(0,0,0,0.1)",
-    display: "flex",
-    flexDirection: "column",
-    gap: "13px"
-  },
-  roles: {
-    display: "flex",
-    gap: "10px",
-    margin: "10px 0"
-  },
-  role: {
-    flex: 1,
-    padding: "12px",
-    border: "1px solid #ccc",
-    borderRadius: "7px",
-    cursor: "pointer"
-  },
-  active: {
-    flex: 1,
-    padding: "12px",
-    background: "#4338ca",
-    color: "white",
-    border: "none",
-    borderRadius: "7px",
-    cursor: "pointer"
-  },
-  input: {
-    padding: "12px",
-    border: "1px solid #ccc",
-    borderRadius: "7px"
-  },
-  submit: {
-    padding: "13px",
-    background: "#4338ca",
-    color: "white",
-    border: "none",
-    borderRadius: "7px",
-    cursor: "pointer",
-    marginTop: "10px"
-  },
-  error: {
-    color: "red",
-    fontSize: "14px"
-  },
-  success: {
-    color: "#15803d",
-    fontSize: "14px"
-  },
-  link: {
-    border: "none",
-    background: "transparent",
-    color: "#4338ca",
-    cursor: "pointer",
-    padding: "8px"
-  }
-};

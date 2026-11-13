@@ -18,18 +18,59 @@ function Dashboard({ role }) {
   }
 
   return (
-    <div style={{ padding: "35px", fontFamily: "Arial" }}>
-      <h1>Smart CBT Examination System</h1>
-      <h2>Welcome, {user.name || role}</h2>
-      <p>Student Dashboard</p>
+    <main className="student-page">
+      <header className="student-header">
+        <div className="student-header-left">
+          <span className="brand-mark" aria-hidden="true">✦</span>
+          <span>smartcbt</span>
+        </div>
+        <div className="student-header-actions">
+          <span className="student-user">Hi, {user.name || role}</span>
+          <button type="button" className="secondary-button" onClick={logout}>
+            Log out
+          </button>
+        </div>
+      </header>
 
-      <button onClick={() => window.location.href = "/exam"}>
-        Start Examination
-      </button>
+      <div className="student-content">
+        <section className="student-hero">
+          <div className="student-hero-copy">
+            <p className="eyebrow">Your learning space</p>
+            <h1>Small steps.<br />Big progress.</h1>
+            <p>Take a breath, trust what you know, and give your next exam your best.</p>
+          </div>
+          <button
+            type="button"
+            className="hero-cta"
+            onClick={() => window.location.href = "/exam"}
+          >
+            Explore exams <span aria-hidden="true">→</span>
+          </button>
+        </section>
 
-      <br /><br />
-      <button onClick={logout}>Logout</button>
-    </div>
+        <div className="student-section-heading">
+          <h2>Make today count</h2>
+          <p>Everything you need to feel ready and do your best.</p>
+        </div>
+        <section className="feature-grid" aria-label="Your exam tools">
+          <article className="feature-card">
+            <span className="feature-icon" aria-hidden="true">✎</span>
+            <h3>Ready when you are</h3>
+            <p>Find your available exams and start when you feel prepared.</p>
+          </article>
+          <article className="feature-card">
+            <span className="feature-icon" aria-hidden="true">◷</span>
+            <h3>Stay in your flow</h3>
+            <p>Keep an eye on your time and focus on one question at a time.</p>
+          </article>
+          <article className="feature-card">
+            <span className="feature-icon" aria-hidden="true">✦</span>
+            <h3>Celebrate your progress</h3>
+            <p>See your score and a helpful performance estimate after an exam.</p>
+          </article>
+        </section>
+      </div>
+    </main>
   );
 }
 

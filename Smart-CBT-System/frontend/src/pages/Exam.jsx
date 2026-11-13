@@ -156,54 +156,75 @@ export default function Exam() {
     `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 
   return (
-    <div style={{ padding: 30, fontFamily: "Arial" }}>
-      <h1>Student Examination</h1>
-      {message && <p>{message}</p>}
+    <main className="exam-page">
+      <header className="exam-heading">
+        <p className="eyebrow" style={{ color: "var(--purple)" }}>Your learning space</p>
+        <h1>{attemptId ? "You’ve got this." : "Available exams"}</h1>
+        <p>{attemptId
+          ? "Take your time and choose the answer that feels right."
+          : "Choose an exam when you’re ready to begin."}</p>
+      </header>
+      {message && <p className="exam-alert" role="alert">{message}</p>}
 
       {!attemptId && exams.map(exam => (
-        <div key={exam.id} style={{ border: "1px solid #ccc", padding: 15, margin: 10 }}>
-          <h3>{exam.title}</h3>
-          <p>{exam.subject} | {exam.duration_minutes} minutes</p>
-          <button onClick={() => startExam(exam.id)}>Start Exam</button>
-        </div>
+        <article key={exam.id} className="exam-card">
+          <h2>{exam.title}</h2>
+          <div className="exam-meta">
+            <span className="exam-chip">{exam.subject}</span>
+            <span className="exam-chip">{exam.duration_minutes} minutes</span>
+            <span className="exam-chip">{exam.total_questions} questions</span>
+          </div>
+          <button className="exam-start" onClick={() => startExam(exam.id)}>
+            Start exam <span aria-hidden="true">→</span>
+          </button>
+        </article>
       ))}
 
-      {!attemptId && loadingExams && <p>Loading available exams...</p>}
+      {!attemptId && loadingExams && (
+        <section className="exam-card"><p>Loading available exams...</p></section>
+      )}
 
       {!attemptId && !loadingExams && exams.length === 0 && (
-        <div>
+        <section className="exam-card">
+          <h2>No exams just yet</h2>
           <p>No active exams are available yet. Ask your admin to create an exam.</p>
-          <button onClick={refreshExams}>Refresh exams</button>
-        </div>
+          <button className="exam-start" onClick={refreshExams}>Refresh exams</button>
+        </section>
       )}
 
       {attemptId && (
         <>
-          <h2>Time Remaining: {formatTime(timeLeft)}</h2>
+          <div className="exam-timer" aria-live="polite">
+            <span aria-hidden="true">◷</span>
+            Time remaining: {formatTime(timeLeft)}
+          </div>
 
           {questions.map((q, index) => (
-            <div key={q.id} style={{ border: "1px solid #ddd", padding: 15, margin: 12 }}>
-              <h3>{index + 1}. {q.question_text}</h3>
+            <section key={q.id} className="exam-question">
+              <p className="eyebrow" style={{ color: "var(--purple)" }}>
+                Question {index + 1} of {questions.length}
+              </p>
+              <h3>{q.question_text}</h3>
 
               {["A", "B", "C", "D"].map(option => (
-                <label key={option} style={{ display: "block", margin: 8 }}>
+                <label key={option} className="exam-option">
                   <input
                     type="radio"
                     name={`question-${q.id}`}
                     checked={answers[q.id] === option}
                     onChange={() => saveAnswer(q.id, option)}
                   />
-                  {" "}{q[`option_${option.toLowerCase()}`]}
+                  <span>{q[`option_${option.toLowerCase()}`]}</span>
                 </label>
               ))}
-            </div>
+            </section>
           ))}
 
-          <button onClick={submitExam} disabled={submitting}>
+          <button className="exam-start exam-submit" onClick={submitExam} disabled={submitting}>
             {submitting ? "Submitting..." : "Submit Exam"}
           </button>
         </>
       )}
-    </div>
+    </main>
   );
 }

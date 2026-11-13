@@ -178,7 +178,7 @@ export default function AdminDashboard({ onLogout }) {
   }
 
   return (
-    <main style={styles.page}>
+    <main className="admin-page" style={styles.page}>
       <header style={styles.header}>
         <div>
           <h1>Smart CBT Admin</h1>
@@ -192,7 +192,7 @@ export default function AdminDashboard({ onLogout }) {
       {error && <p role="alert" style={styles.error}>{error}</p>}
       {message && <p role="status" style={styles.success}>{message}</p>}
 
-      <section style={styles.summaryGrid} aria-label="System summary">
+      <section className="admin-summary" style={styles.summaryGrid} aria-label="System summary">
         {[
           ["Students", dashboard?.summary.students],
           ["Exams", dashboard?.summary.exams],
@@ -207,7 +207,7 @@ export default function AdminDashboard({ onLogout }) {
       </section>
 
       <section style={styles.columns}>
-        <form onSubmit={addQuestion} style={styles.card}>
+        <form className="admin-card" onSubmit={addQuestion} style={styles.card}>
           <h2>{editingQuestionId === null ? "Add a question" : `Edit question ${editingQuestionId}`}</h2>
           <label>
             Question
@@ -274,7 +274,7 @@ export default function AdminDashboard({ onLogout }) {
           )}
         </form>
 
-        <form onSubmit={createExam} style={styles.card}>
+        <form className="admin-card" onSubmit={createExam} style={styles.card}>
           <h2>Create an exam</h2>
           <label>
             Exam title
@@ -336,7 +336,7 @@ export default function AdminDashboard({ onLogout }) {
         </form>
       </section>
 
-      <section style={styles.card}>
+      <section className="admin-card" style={styles.card}>
         <h2>Question bank ({questions.length})</h2>
         {questions.length === 0 ? <p>No questions have been added yet.</p> : (
           <ul style={styles.questionBank}>
@@ -360,7 +360,7 @@ export default function AdminDashboard({ onLogout }) {
         )}
       </section>
 
-      <section style={styles.card}>
+      <section className="admin-card" style={styles.card}>
         <h2>Existing exams</h2>
         {exams.length === 0 ? <p>No exams created yet.</p> : (
           <ul>
@@ -374,7 +374,7 @@ export default function AdminDashboard({ onLogout }) {
         )}
       </section>
 
-      <section style={styles.card}>
+      <section className="admin-card" style={styles.card}>
         <h2>Students and exam marks</h2>
         {!dashboard ? (
           <p>Loading student results...</p>
@@ -433,7 +433,6 @@ const styles = {
     width: "100%",
     boxSizing: "border-box",
     padding: "32px",
-    fontFamily: "Arial, sans-serif",
     textAlign: "left"
   },
   header: {
@@ -460,8 +459,8 @@ const styles = {
     flexDirection: "column",
     gap: "4px",
     padding: "16px",
-    border: "1px solid #d1d5db",
-    borderRadius: "10px",
+    border: "1px solid #e9e9f2",
+    borderRadius: "14px",
     background: "#fff"
   },
   tableWrapper: {
@@ -478,7 +477,7 @@ const styles = {
     justifyContent: "space-between",
     gap: "16px",
     padding: "12px 0",
-    borderBottom: "1px solid #e5e7eb"
+    borderBottom: "1px solid #e9e9f2"
   },
   table: {
     width: "100%",
@@ -487,7 +486,7 @@ const styles = {
   },
   cell: {
     padding: "10px",
-    borderBottom: "1px solid #e5e7eb",
+    borderBottom: "1px solid #e9e9f2",
     verticalAlign: "top"
   },
   card: {
@@ -495,8 +494,8 @@ const styles = {
     flexDirection: "column",
     gap: "12px",
     padding: "22px",
-    border: "1px solid #d1d5db",
-    borderRadius: "12px",
+    border: "1px solid #e9e9f2",
+    borderRadius: "16px",
     background: "#fff"
   },
   input: {
@@ -505,8 +504,8 @@ const styles = {
     width: "100%",
     marginTop: "5px",
     padding: "10px",
-    border: "1px solid #cbd5e1",
-    borderRadius: "6px",
+    border: "1px solid #e1e1ed",
+    borderRadius: "10px",
     font: "inherit"
   },
   inlineFields: {
@@ -532,20 +531,20 @@ const styles = {
     border: "none",
     borderRadius: "6px",
     color: "#fff",
-    background: "#4338ca",
+    background: "#6754dc",
     cursor: "pointer"
   },
   secondaryButton: {
     padding: "10px 14px",
-    border: "1px solid #cbd5e1",
-    borderRadius: "6px",
+    border: "1px solid #e9e9f2",
+    borderRadius: "10px",
     background: "#fff",
     cursor: "pointer"
   },
   error: {
-    color: "#b91c1c"
+    color: "#b94339"
   },
   success: {
-    color: "#15803d"
+    color: "#287c4f"
   }
 };

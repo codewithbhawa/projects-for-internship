@@ -37,11 +37,14 @@ export default function Result() {
 
   if (!result) {
     return (
-      <main style={styles.page}>
-        <h1>Examination Result</h1>
-        <p>No submitted exam result was found.</p>
-        <button onClick={() => navigate("/dashboard")} style={styles.button}>
-          Back to Dashboard
+      <main className="result-page">
+        <header className="result-heading">
+          <p className="eyebrow" style={{ color: "var(--purple)" }}>Your progress</p>
+          <h1>No result to show yet</h1>
+          <p>Complete an exam and your results will appear here.</p>
+        </header>
+        <button onClick={() => navigate("/dashboard")} className="exam-start">
+          Back to dashboard
         </button>
       </main>
     );
@@ -58,15 +61,21 @@ export default function Result() {
     );
 
   return (
-    <main style={styles.page}>
-      <h1>Examination Result</h1>
-      <h2>{result.exam_title || "Exam submitted successfully"}</h2>
-      <section style={styles.card}>
-        <p><strong>Marks obtained:</strong> {result.score} / {result.total_marks}</p>
-        <p><strong>Percentage:</strong> {percentage}%</p>
+    <main className="result-page">
+      <header className="result-heading">
+        <p className="eyebrow" style={{ color: "var(--purple)" }}>One step further</p>
+        <h1>Nicely done!</h1>
+        <p>Your exam has been submitted. Here’s how you did.</p>
+      </header>
+      <section className="result-card">
+        <h2>{result.exam_title || "Examination result"}</h2>
+        <div className="result-score">
+          <p><strong>Marks obtained:</strong> {result.score} / {result.total_marks}</p>
+          <p><strong>Percentage:</strong> {percentage}%</p>
+        </div>
       </section>
 
-      <section style={styles.card}>
+      <section className="result-card">
         <h2>Performance prediction</h2>
         {performance ? (
           <>
@@ -85,7 +94,7 @@ export default function Result() {
             <p>{performance.message}</p>
           </>
         ) : predictionError ? (
-          <p role="alert" style={styles.error}>
+          <p role="alert" className="result-error">
             Could not load prediction: {predictionError}
           </p>
         ) : (
@@ -93,37 +102,9 @@ export default function Result() {
         )}
       </section>
 
-      <button onClick={() => navigate("/dashboard")} style={styles.button}>
-        Back to Dashboard
+      <button onClick={() => navigate("/dashboard")} className="exam-start">
+        Back to dashboard
       </button>
     </main>
   );
 }
-
-const styles = {
-  page: {
-    maxWidth: "720px",
-    margin: "0 auto",
-    padding: "32px",
-    fontFamily: "Arial, sans-serif",
-    textAlign: "left"
-  },
-  card: {
-    margin: "18px 0",
-    padding: "20px",
-    border: "1px solid #d1d5db",
-    borderRadius: "10px",
-    background: "#fff"
-  },
-  button: {
-    padding: "12px 18px",
-    border: "none",
-    borderRadius: "6px",
-    color: "#fff",
-    background: "#4338ca",
-    cursor: "pointer"
-  },
-  error: {
-    color: "#b91c1c"
-  }
-};
