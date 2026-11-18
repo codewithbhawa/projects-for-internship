@@ -1,8 +1,10 @@
+.env
+*.db
+*.pyc
+__pycache__/
+node_modules/
 venv/
 .venv/
-node_modules/
-.env
-__pycache__/
-*.pyc
-*.db
 dist/
+backend/reset_admin.py
+backend/reset_student.py
