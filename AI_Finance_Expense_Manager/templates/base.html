@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI Finance Manager{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-icon">₹</span><div><b>FinPilot</b><small>AI Finance Manager</small></div></div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint=='dashboard' else '' }}">▦ &nbsp; Dashboard</a>
+      <a href="{{ url_for('transactions') }}" class="{{ 'active' if request.endpoint=='transactions' else '' }}">⇄ &nbsp; Transactions</a>
+      <a href="{{ url_for('analysis') }}" class="{{ 'active' if request.endpoint=='analysis' else '' }}">◔ &nbsp; Analytics</a>
+      <a href="{{ url_for('forecast') }}" class="{{ 'active' if request.endpoint=='forecast' else '' }}">⌁ &nbsp; Forecast</a>
+      <a href="{{ url_for('receipt') }}" class="{{ 'active' if request.endpoint=='receipt' else '' }}">▤ &nbsp; Bill / Receipt</a>
+      <a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint=='about' else '' }}">ⓘ &nbsp; About Project</a>
+    </nav>
+    <div class="side-note"><span>✦</span><b>Spend smarter.</b><p>Understand your money and build better habits.</p></div>
+    <div class="sidebar-foot">Student project · 2026</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">PERSONAL FINANCE</span><h2>{% block heading %}Overview{% endblock %}</h2></div><div class="profile"><div class="avatar">S</div><span>Student account</span></div></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>FinPilot · AI Finance & Expense Manager <span>Demo data stays on this device</span></footer>
+  </main>
+</div>
+{% block scripts %}{% endblock %}
+</body></html>

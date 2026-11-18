@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Forecast | FinPilot{% endblock %}{% block heading %}Expense forecast <span class="muted">A simple look at what may come next.</span>{% endblock %}
+{% block content %}
+<section class="welcome forecast-welcome"><div><span class="pill">✦ SPENDING ESTIMATE</span><h1>Plan ahead.<br><em>Stay prepared.</em></h1><p>Use past expense records to create a simple monthly estimate.</p></div><div class="forecast-number"><small>Estimated monthly expenses</small><strong>₹{{ "%.2f"|format(forecast_value) }}</strong><span>Based on up to the last 3 recorded months</span></div></section>
+<section class="panel"><div class="panel-head"><div><h3>Historical expenses</h3><p>Recorded monthly expense totals</p></div></div><div class="large-chart"><canvas id="forecastChart"></canvas>{% if not history %}<p class="empty">Add expense transactions to build your forecast.</p>{% endif %}</div></section>
+<div class="notice"><b>Important:</b> This is an educational baseline estimate using the average of up to the last three months. It is not a guaranteed prediction and does not use a trained machine-learning model. More monthly records can make the estimate more useful.</div>
+{% endblock %}
+{% block scripts %}<script>
+const hist={{history|tojson}},pred={{forecast_value|tojson}};
+if(hist.length){const labels=hist.map(x=>x.month);labels.push('Next month (estimate)');const vals=hist.map(x=>x.amount);vals.push(pred);new Chart(document.getElementById('forecastChart'),{type:'line',data:{labels,datasets:[{label:'Expenses (₹)',data:vals,borderColor:'#796be5',backgroundColor:'#796be522',fill:true,tension:.3,pointRadius:5}]},options:{maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});}
+</script>{% endblock %}

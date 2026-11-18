@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block title %}Transactions | FinPilot{% endblock %}{% block heading %}Transactions <span class="muted">Manage your money activity.</span>{% endblock %}
+{% block content %}
+<div class="two-col">
+<section class="panel form-panel"><div class="panel-head"><div><h3>Add a transaction</h3><p>Record income or an expense</p></div><span class="stat-icon purple">＋</span></div>
+<form method="POST" class="form">
+<label>Title<input name="title" placeholder="e.g. Grocery shopping" required></label>
+<div class="form-row"><label>Amount (₹)<input name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></label><label>Type<select name="kind"><option>Expense</option><option>Income</option></select></label></div>
+<div class="form-row"><label>Category<select name="category"><option>Food</option><option>Transport</option><option>Education</option><option>Bills</option><option>Shopping</option><option>Health</option><option>Entertainment</option><option>Freelance</option><option>Allowance</option><option>Other</option></select></label><label>Date<input type="date" name="txn_date" value="{{ '' }}"></label></div>
+<label>Note (optional)<input name="note" placeholder="Add a short note"></label><button class="btn" type="submit">Save transaction →</button>
+</form></section>
+<section class="panel"><div class="panel-head"><div><h3>Quick guide</h3><p>Keep your records useful</p></div></div><div class="guide-item"><span class="guide-icon green">↙</span><div><b>Income</b><p>Money received, such as salary, allowance or tuition fees.</p></div></div><div class="guide-item"><span class="guide-icon orange">↗</span><div><b>Expense</b><p>Money spent on food, travel, bills, shopping and more.</p></div></div><div class="guide-item"><span class="guide-icon purple">✦</span><div><b>Be consistent</b><p>Add transactions regularly for more meaningful analysis.</p></div></div></section>
+</div>
+<section class="panel table-panel"><div class="panel-head"><div><h3>All transactions</h3><p>{{ rows|length }} records found</p></div></div><table><thead><tr><th>DESCRIPTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="right">AMOUNT</th><th></th></tr></thead><tbody>
+{% for r in rows %}<tr><td><b>{{ r.title }}</b><small class="sub">{{ r.note }}</small></td><td>{{ r.category }}</td><td>{{ r.txn_date }}</td><td><span class="tag {{ 'income' if r.kind=='Income' else 'expense' }}">{{ r.kind }}</span></td><td class="right {{ 'positive' if r.kind=='Income' else 'negative' }}">₹{{ "%.2f"|format(r.amount) }}</td><td><form method="POST" action="{{ url_for('delete_transaction',txn_id=r.id) }}" onsubmit="return confirm('Delete this transaction?')"><button class="delete" title="Delete">×</button></form></td></tr>{% else %}<tr><td colspan="6" class="empty">No records found.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}

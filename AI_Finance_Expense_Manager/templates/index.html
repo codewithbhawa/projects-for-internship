@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block title %}Dashboard | FinPilot{% endblock %}{% block heading %}Good day! <span class="muted">Here is your money snapshot.</span>{% endblock %}
+{% block content %}
+<section class="welcome"><div><span class="pill">✦ SMART MONEY OVERVIEW</span><h1>Take control of<br><em>your finances.</em></h1><p>Track transactions, understand spending and plan your next month.</p><a class="btn light" href="{{ url_for('transactions') }}">+ Add transaction</a></div><div class="welcome-art"><div class="orb">₹</div><div class="mini-card">↗ <b>Money clarity</b><small>One step at a time</small></div></div></section>
+<section class="stats">
+  <div class="stat-card"><div class="stat-top"><span>Total balance</span><span class="stat-icon purple">₹</span></div><h2>₹{{ "%.2f"|format(balance) }}</h2><small class="positive">Income minus expenses</small></div>
+  <div class="stat-card"><div class="stat-top"><span>Total income</span><span class="stat-icon green">↙</span></div><h2>₹{{ "%.2f"|format(income) }}</h2><small>All recorded income</small></div>
+  <div class="stat-card"><div class="stat-top"><span>Total expenses</span><span class="stat-icon orange">↗</span></div><h2>₹{{ "%.2f"|format(expenses) }}</h2><small>All recorded expenses</small></div>
+  <div class="stat-card"><div class="stat-top"><span>This month</span><span class="stat-icon blue">◷</span></div><h2>₹{{ "%.2f"|format(month_expense) }}</h2><small>Expense this month</small></div>
+</section>
+<section class="content-grid">
+ <div class="panel"><div class="panel-head"><div><h3>Expense breakdown</h3><p>Where your money goes</p></div><a href="{{ url_for('analysis') }}">Full analysis ↗</a></div><div class="chart-wrap"><canvas id="dashChart"></canvas>{% if not category_values %}<p class="empty">Add expenses to see your chart.</p>{% endif %}</div></div>
+ <div class="panel insight"><div class="panel-head"><div><h3>Smart insight</h3><p>Automated spending summary</p></div><span class="spark">✦</span></div><div class="insight-body"><div class="insight-icon">✧</div><h4>Your finance check-in</h4><p>{% if expenses > income %}Your recorded expenses are higher than income. Review non-essential spending and plan a budget.{% elif expenses > 0 %}You have spent ₹{{ "%.2f"|format(expenses) }} so far. Check the category chart to identify your biggest expense area.{% else %}Start by adding your income and expenses to receive useful spending insights.{% endif %}</p><a href="{{ url_for('forecast') }}">Explore expense forecast →</a></div></div>
+</section>
+<section class="panel table-panel"><div class="panel-head"><div><h3>Recent transactions</h3><p>Your latest money activity</p></div><a href="{{ url_for('transactions') }}">View all ↗</a></div>
+<table><thead><tr><th>DESCRIPTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="right">AMOUNT</th></tr></thead><tbody>
+{% for r in recent %}<tr><td><b>{{ r.title }}</b><small class="sub">{{ r.note }}</small></td><td>{{ r.category }}</td><td>{{ r.txn_date }}</td><td><span class="tag {{ 'income' if r.kind=='Income' else 'expense' }}">{{ r.kind }}</span></td><td class="right {{ 'positive' if r.kind=='Income' else 'negative' }}">{{ '+' if r.kind=='Income' else '−' }}₹{{ "%.2f"|format(r.amount) }}</td></tr>{% else %}<tr><td colspan="5" class="empty">No transactions yet.</td></tr>{% endfor %}
+</tbody></table></section>
+{% endblock %}
+{% block scripts %}<script>
+const labels={{ category_labels|tojson }}, values={{ category_values|tojson }};
+if(labels.length){new Chart(document.getElementById('dashChart'),{type:'doughnut',data:{labels,datasets:[{data:values,backgroundColor:['#7766e8','#25b99a','#f4a65b','#5797e8','#e879a8','#8a9aaa','#b0a0e8'],borderWidth:0,hoverOffset:7}]},options:{maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'right',labels:{usePointStyle:true,boxWidth:8,padding:17}}}}});}
+</script>{% endblock %}
