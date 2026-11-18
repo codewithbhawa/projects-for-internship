@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AttendAI | Smart Attendance</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+<body><div class="shell">
+{% if session.get('admin') %}<aside class="sidebar"><div class="brand">◈ Attend<span>AI</span></div><p class="muted">SMART CAMPUS</p>
+<a href="{{url_for('dashboard')}}">Overview</a><a href="{{url_for('students_page')}}">Students</a><a href="{{url_for('attendance_page')}}">Attendance</a><a href="{{url_for('analytics')}}">Analytics</a><a href="{{url_for('prediction')}}">Performance AI</a><a href="{{url_for('face_page')}}">Face demo</a><a href="{{url_for('logout')}}">Log out</a></aside>{% endif %}
+<main class="main">{% with messages=get_flashed_messages() %}{% if messages %}{% for m in messages %}<div class="flash">{{m}}</div>{% endfor %}{% endif %}{% endwith %}{% block content %}{% endblock %}</main></div></body></html>
